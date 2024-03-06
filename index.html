@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+      /* CSS styles here... */
+    </style>
+  </head>
+
+  <body>
+    <div class="report">
+      <h2>Report</h2>
+      <div class="report__cards">
+        {{range .Results}}
+        <div class="report__card">
+          <h3 class="report__card-control">{{.Question}}</h3>
+          <h4 class="report__card-title">
+            {{.Answer}}
+          </h4>
+          <div class="report__card-content">
+            <span class="report__card-content-title">Evaluation</span>
+            <p class="report__card-content-description">
+              {{.Evaluation}}
+            </p>
+          </div>
+          <div class="report__card-content">
+            <span class="report__card-content-title">Score</span>
+            <p class="report__card-content-description">
+              {{.Score}}
+            </p>
+          </div>
+        </div>
+        {{end}}
+      </div>
+    </div>
+  </body>
+</html>

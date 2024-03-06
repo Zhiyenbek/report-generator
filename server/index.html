@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate PDF Report</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#generateBtn').click(function() {
+        var reportData = {
+          name: $('#name').val(),
+          startedat: Math.floor(Date.now() / 1000),
+          results: []
+        };
+        
+        // Iterate over question fields and collect data
+
+        $('.question').each(function(index) {
+          var questionIndex = index + 1;
+          var answerId = 'answer' + questionIndex;
+          var evaluationId = 'evaluation' + questionIndex;
+          var scoreId = 'score' + questionIndex;
+
+          var question = $(this).val();
+          var answer = generateRandomAnswer();
+          var evaluation = generateRandomEvaluation();
+          var score = generateRandomScore();
+
+          var result = {
+            question: question,
+            answer: answer,
+            evaluation: evaluation,
+            score: score
+          };
+
+          reportData.results.push(result);
+        });
+        // Send reportData to the server to generate the PDF report
+        $.ajax({
+          type: 'POST',
+          url: 'http://localhost:4000/report/generate',
+          data: JSON.stringify(reportData),
+          contentType: 'application/json',
+          success: function(response) {
+            // Download the generated PDF report
+            if (response.error === null && response.response.status === 0) {
+              var link = document.createElement('a');
+              link.href = response.response.data;
+              link.download = 'Programming Quiz.pdf';
+              link.click();
+            } else {
+              alert('An error occurred while generating the PDF report.');
+            }
+          },
+          error: function() {
+            alert('An error occurred while generating the PDF report.');
+          }
+        });
+      });
+      
+      function generateRandomAnswer() {
+  var answers = [
+    "I don't know, but let me ask my pet hamster for you.",
+    "I always consult my Magic 8-Ball, and it says 'Outlook not so good'.",
+    "It's as likely as finding a unicorn riding a unicycle.",
+    // Add more random answers as needed
+  ];
+  var randomIndex = Math.floor(Math.random() * answers.length);
+  return answers[randomIndex];
+}
+
+function generateRandomEvaluation() {
+  var evaluations = [
+    "This candidate clearly doesn't know what they are talking about. It's like they've never seen a computer before.",
+    "I'm not satisfied with this candidate's response. It's clear they have no clue about the subject matter.",
+    "Neutral is the best way to describe this candidate's understanding. It's neither impressive nor disappointing.",
+    // Add more random evaluations as needed
+  ];
+  var randomIndex = Math.floor(Math.random() * evaluations.length);
+  return evaluations[randomIndex];
+}
+
+function generateRandomScore() {
+  var score = Math.floor(Math.random() * 100);
+  return score.toString();
+}
+    });
+  </script>
+</head>
+<body>
+  <h1>Generate PDF Report</h1>
+  <form id="reportForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required><br><br>
+    
+    <div id="questionsContainer">
+      <div class="questionGroup">
+        <label>Question 1:</label>
+        <textarea class="question" rows="4" cols="50" required></textarea><br><br>
+      </div>
+    </div>
+    
+    <button type="button" id="addQuestionBtn">Add Question</button><br><br>
+    
+    <button type="button" id="generateBtn">Generate PDF Report</button>
+  </form>
+  
+  <script>
+    $(document).ready(function() {
+      var questionIndex = 2;
+      
+      $('#addQuestionBtn').click(function() {
+        var questionGroup = $('<div>').addClass('questionGroup');
+        
+        var questionLabel = $('<label>').text('Question ' + questionIndex + ':');
+        var questionTextarea = $('<textarea>').addClass('question').attr('rows', '4').attr('cols', '50').prop('required', true);
+        
+        questionGroup.append(questionLabel, questionTextarea, $('<br>'), $('<br>'));
+        
+        $('#questionsContainer').append(questionGroup);
+        
+        questionIndex++;
+      });
+    });
+  </script>
+</body>
+</html>

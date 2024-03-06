@@ -1,0 +1,24 @@
+version: '3'
+services:
+  # report-generator:
+  #   build:
+  #     context: ./
+  #     dockerfile: build/Dockerfile
+  #   restart: always
+  #   depends_on: 
+  #     - gotenberg 
+  #   ports:
+  #     - "4000:4000"
+  #   volumes:
+  #     - ./config/local.yaml:/app/config.yaml:ro
+  #     - ./serversec.reports:/app/serversec.reports:ro
+  #     - ./reports:/app/reports:rw
+  #   environment:
+  #     - APP_MODE=
+  
+  gotenberg:
+    image: gotenberg/gotenberg:8.2.0-cloudrun
+    container_name: gotenberg
+    restart: always
+    ports:
+      - "3000:3000"

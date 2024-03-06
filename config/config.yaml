@@ -1,0 +1,15 @@
+server:
+  port: 3000
+  base_path:
+  timeouts:
+    read: 10s
+    write: 10s 
+    shutdown: 10s 
+    read_header: 10s
+generator:
+  convert_url: http://localhost:3000/forms/chromium/convert/html
+  merge_url: 
+  timeout: 5s
+  template: reports/reports/index.html
+file_server:
+  url_prefix: 

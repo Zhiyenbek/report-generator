@@ -1,0 +1,3 @@
+[submodule "serversec.reports"]
+	path = serversec.reports
+	url = git@gitlab.wtotem.net:webtotem-server/serversec.reports.git
